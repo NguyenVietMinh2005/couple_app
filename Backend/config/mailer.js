@@ -5,9 +5,13 @@ dotenv.config();
 // Cấu hình tài khoản Gmail sẽ làm nhiệm vụ gửi thư
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  family: 4, // 👈 ĐÂY LÀ CHÌA KHÓA VÀNG ĐỂ RENDER KHÔNG BỊ XOAY TRÒN
   auth: {
-    user: process.env.EMAIL_USER, // Sẽ điền vào file .env sau
-    pass: process.env.EMAIL_PASS  // Mật khẩu ứng dụng (App Password)
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS  
   }
 });
 
