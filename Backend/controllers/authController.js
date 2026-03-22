@@ -37,39 +37,30 @@ export const registerEmail = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
 
+    // 1. Kiểm tra xem email đã tồn tại chưa
     let user = await User.findOne({ email });
 
-    if (user && user.isVerified) {
-      return res.status(400).json({ message: 'Email này đã được đăng ký và xác thực!' });
+    if (user) {
+      return res.status(400).json({ message: 'Email này đã được đăng ký!' });
     }
 
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
-
+    // 2. Mã hóa mật khẩu bảo mật
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    if (user && !user.isVerified) {
-      user.otpCode = otpCode;
-      user.otpExpires = otpExpires;
-      user.password = hashedPassword;
-      user.fullName = fullName;
-      await user.save();
-    } else {
-      user = await User.create({
-        fullName,
-        email,
-        password: hashedPassword,
-        otpCode,
-        otpExpires,
-        isVerified: false
-      });
-    }
+    // 3. Tạo tài khoản mới (Đặt isVerified: true để cho phép đăng nhập luôn)
+    user = await User.create({
+      fullName,
+      email,
+      password: hashedPassword,
+      isVerified: true 
+    });
 
-    await sendOTPEmail(email, otpCode);
-
-    res.status(200).json({ 
-      message: '📧 Đã gửi mã OTP! Vui lòng kiểm tra hộp thư của bạn.' 
+    // KHÔNG GỌI sendOTPEmail NỮA ĐỂ TRÁNH LỖI MẠNG VÀ CHỜ ĐỢI
+    
+    // 4. Trả về thông báo thành công cho App
+    res.status(201).json({ 
+      message: 'Đăng ký tài khoản thành công! Vui lòng đăng nhập.' 
     });
 
   } catch (error) {

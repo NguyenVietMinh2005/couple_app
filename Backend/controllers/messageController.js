@@ -4,8 +4,8 @@ import User from '../models/User.js';
 // API Gửi tin nhắn mới
 export const sendMessage = async (req, res) => {
   try {
-    const userId = req.user._id; // Lấy ID trực tiếp từ Token đã được bảo vệ xét duyệt
-    const { content, messageType } = req.body; // Không cần lấy senderId từ body nữa
+    const userId = req.user._id; // Lấy ID trực tiếp từ Token
+    const { content, messageType } = req.body; 
 
     if (!content) {
       return res.status(400).json({ message: 'Thiếu nội dung tin nhắn' });
@@ -13,17 +13,12 @@ export const sendMessage = async (req, res) => {
 
     const user = await User.findById(userId);
 
-    if (!senderId || !content) {
-      return res.status(400).json({ message: 'Thiếu người gửi hoặc nội dung tin nhắn' });
-    }
-
-    // 1. Kiểm tra người gửi và lấy ID phòng chat (coupleId)
-    
+    // Kiểm tra người gửi và lấy ID phòng chat (coupleId)
     if (!user || !user.coupleId) {
       return res.status(400).json({ message: 'Bạn cần ghép đôi trước khi nhắn tin!' });
     }
 
-    // 2. Tạo tin nhắn mới lưu vào database
+    // Tạo tin nhắn mới lưu vào database
     const newMessage = await Message.create({
       coupleId: user.coupleId,
       senderId: user._id,
