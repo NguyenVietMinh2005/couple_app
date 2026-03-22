@@ -18,6 +18,8 @@ dotenv.config();
 
 // Hàm tiện ích để gửi OTP
 export const sendOTPEmail = async (toEmail, otpCode) => {
+  console.log("Key đang dùng:", process.env.BREVO_API_KEY ? "Đã tìm thấy" : "Trống không");
+  
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
