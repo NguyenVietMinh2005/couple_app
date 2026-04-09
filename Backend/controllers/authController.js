@@ -116,6 +116,7 @@ export const verifyOTP = async (req, res) => {
 // API Đăng nhập bằng Email & Mật khẩu
 export const loginEmail = async (req, res) => {
   try {
+    console.log("===> CÓ APP ĐANG GỌI ĐĂNG NHẬP VỚI DATA: ", req.body);
     const { email, password } = req.body;
 
     // 1. Tìm user theo email (nhớ móc thẻ +password ra để so sánh)

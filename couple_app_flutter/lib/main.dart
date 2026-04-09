@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // 1. Thêm dòng này để gọi file giao diện Đăng nhập
-import 'screens/login_screen.dart'; 
+ 
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 2. Thay nguyên cục Scaffold cũ bằng LoginScreen
-      home: const LoginScreen(), 
+      home: const SplashScreen(),
     );
   }
 }

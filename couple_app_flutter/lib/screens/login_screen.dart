@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../api/api_client.dart'; // Đảm bảo bạn đã tạo file này ở bước trước
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
+import 'main_tab_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,7 +46,15 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString('userToken', response.data['token']);
 
       _showMessage('Đăng nhập thành công! 🎉', isSuccess: true);
-      // TODO: Thêm lệnh chuyển sang trang Chủ (Tabs) ở đây
+      
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          // SỬA CHỮ HomeScreen() THÀNH MainTabScreen() Ở DÒNG DƯỚI ĐÂY:
+          MaterialPageRoute(builder: (context) => const MainTabScreen()),
+        );
+      
+}
     } on DioException catch (e) {
       print("CHI TIẾT LỖI ĐĂNG NHẬP: ${e.response?.data ?? e.message}");
       final message =
