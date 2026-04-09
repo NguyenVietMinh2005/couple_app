@@ -147,6 +147,9 @@ io.on("connection", (socket) => {
 });
 
 // 5. Quan trọng: Đổi app.listen thành server.listen
-server.listen(3000, () => {
-  console.log("🚀 Server đang chạy trên port 3000 kèm Socket.io");
+// Đổi app.listen thành server.listen và dùng PORT động của Render
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log(`🚀 Server đang chạy trên port ${PORT} kèm Socket.io`);
 });
